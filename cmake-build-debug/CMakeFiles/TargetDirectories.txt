@@ -1,0 +1,3 @@
+C:/Users/RAZVAN/SD-/cmake-build-debug/CMakeFiles/SD_.dir
+C:/Users/RAZVAN/SD-/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/RAZVAN/SD-/cmake-build-debug/CMakeFiles/rebuild_cache.dir
