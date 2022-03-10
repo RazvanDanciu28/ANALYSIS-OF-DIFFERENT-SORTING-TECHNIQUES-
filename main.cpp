@@ -1,8 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
+ifstream fin ("input.txt");
 
 //functie care testeaza daca vectorul este sortat corect
 int test_sort (vector<int> v_sortat, int n)
@@ -13,17 +15,17 @@ int test_sort (vector<int> v_sortat, int n)
     return 1;
 }
 //functie care atriubuie valori random vectorului in functie de numarul de numere si numarul maxim
-void get_random_vector (vector<int> v, int n, int maxx)
+void get_random_vector (vector<int> &v, int n, int maxx)
 {
     srand(time(0));
-    int rand_nr;
     for (int i = 0; i < n; i++){
-        rand_nr = (rand() * rand()) % (maxx + 1);
+        int rand_nr = (rand() * rand()) % (maxx + 1);
         v.push_back(rand_nr);
     }
 }
 
-void MergeSort(vector<int> &v, int st, int dr)
+
+void MergeSort(vector<int> v, int st, int dr)
 {
 
     //int size = v.size();
@@ -46,9 +48,10 @@ void MergeSort(vector<int> &v, int st, int dr)
         for(i = st , j = 0 ; i <= dr ; i ++ , j ++)
             v[i] = w[j];
     }
+    w.clear();
 }
 
-void SelectionSort (vector<int> &v, int n)
+void SelectionSort (vector<int> v, int n)
 {
     auto start = high_resolution_clock::now();
     for (int i = 0; i < n-1; i++){
@@ -64,7 +67,7 @@ void SelectionSort (vector<int> &v, int n)
         cout<<"SelectionSort nu a sortat numerele corect";
 }
 
-void CountingSort(vector<int> &v, int n, int maxx)
+void CountingSort(vector<int> v, int n, int maxx)
 {
     auto start = high_resolution_clock::now();
     int size = v.size();
@@ -83,10 +86,24 @@ void CountingSort(vector<int> &v, int n, int maxx)
         cout<<"CountingSort a sortat corect numerele in "<<duration.count()/10000.0000000000 <<" secunde"<< endl;
     else
         cout<<"CountingSort nu a sortat numerele corect";
+    w.clear();
 }
 
 
 int main() {
+
+    /*citire fisier
+     * int n, maxx, numar_teste;
+     * vector <int> v;
+     * fin>>numar_teste;
+     * for (int i = 1; i <= numar_teste; i++){
+     *      fin>>n>>maxx;
+     *      get_random_vector(v, n, maxx);
+     *
+     *
+     * }
+     */
+
 
     int n, maxx, numar_teste;
     vector <int> v;
