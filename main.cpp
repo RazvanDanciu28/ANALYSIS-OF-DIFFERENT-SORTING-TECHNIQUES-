@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
@@ -24,11 +25,12 @@ void get_random_vector (vector<int> &v, int n, int maxx)
     }
 }
 
-
+//Fiind o functie recursiva, nu pot masura timpul in cadrul functiei pentru ca se va autoapela si voi avea returnati mai multi timpi
+//asa ca voi masura timpul in main
 void MergeSort(vector<int> v, int st, int dr)
 {
 
-    //int size = v.size();
+    //creez vector auxiliar pentru interclasare
     vector<int> w;
     if(st < dr)
     {
@@ -89,6 +91,46 @@ void CountingSort(vector<int> v, int n, int maxx)
     w.clear();
 }
 
+//RadixSort doar in baza 10
+int RadixSort(vector<int> v, int n){
+    auto start = high_resolution_clock::now();
+    //caut maximul pentru a sti cate cifre are cel mai mare si pana la cat merg cu forul
+    int max_el = v[0];
+    for (auto it: v) if (it > max_el) max_el = it;
+
+    //incep de la lsd spre msd
+    for (int nr_cifra = 1; max_el / nr_cifra > 0; nr_cifra *= 10){
+        //imi fac o structura de cozi, pentru fiecare cifra din baza 10, voi avea o coada aferenta
+        struct cozi { queue<int> c;};
+        //imi fac un pointer de cozi (tipul structurii) pentru a putea sterge la final si a salva memorie
+        cozi *w = new cozi[11];
+        for (auto it: v){
+            w[(it / nr_cifra) % 10].c.push(it);
+        }
+        v.clear(); //sterg vectorul pentru a-l completa la loc cu numerele sortate dupa cifra curenta
+        for (int i = 0; i <= 10; i++){
+            while (!w[i].c.empty()){
+                v.push_back(w[i].c.front());
+                w[i].c.pop();
+            }
+        }
+        delete[] w;
+    }
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    if (test_sort(v, n))
+        cout<<"RadixSort a sortat corect numerele in "<<duration.count()/10000.0000000000 <<" secunde"<< endl;
+    else
+        cout<<"CountingSort nu a sortat numerele corect";
+
+}
+
+void ShellSort (vector<int> &v, int n)
+{
+    for (int gap = n / 2; gap > 1; gap /= 2 ){
+        for (int i = 0; i <= gap; i ++)
+    }
+}
 
 int main() {
 
@@ -112,5 +154,7 @@ int main() {
         int x; cin>>x;
         v.push_back(x);
     }
+    CountingSort(v, n, 11001);
+    for (auto it: v) cout<<it<<" ";
     return 0;
 }
