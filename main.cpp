@@ -125,11 +125,32 @@ int RadixSort(vector<int> v, int n){
 
 }
 
+
+void InsersionSort (vector<int> &v, int n)
+{
+    for (int i = 1; i < n; i++){
+        int elem_curent = v[i];
+        int j = i - 1;
+        while (j >= 0 and v[j] > elem_curent){
+            v[j+1] = v[j];
+            j--;
+        }
+        v[j+1] = elem_curent;
+    }
+}
 void ShellSort (vector<int> &v, int n)
 {
-    for (int gap = n / 2; gap > 1; gap /= 2 ){
-        for (int i = 0; i <= gap; i ++)
+    int gap;
+    for (gap = (n - 1) / 2; gap > 1; gap /= 2 ){
+        for (int i = 0; i < gap; i ++){
+            if (v[i] > v[i+gap]) swap(v[i], v[i+gap]);
+        }
+        for (int i = 2 * gap; i < n - gap ; i++){
+            if ((i + gap < n) and (v[i] > v[i+gap])) swap(v[i], v[i+gap]);
+        }
+
     }
+    if (gap == 1 and !test_sort(v, n)) InsersionSort(v, n);
 }
 
 int main() {
@@ -154,7 +175,7 @@ int main() {
         int x; cin>>x;
         v.push_back(x);
     }
-    CountingSort(v, n, 11001);
+    ShellSort(v, n);
     for (auto it: v) cout<<it<<" ";
     return 0;
 }
