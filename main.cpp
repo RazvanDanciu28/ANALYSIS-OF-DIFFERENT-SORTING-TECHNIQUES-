@@ -5,7 +5,7 @@
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
-ifstream fin ("input.txt");
+ifstream fin("input.txt");
 
 //functie care testeaza daca vectorul este sortat corect
 int test_sort (vector<int> v_sortat, int n)
@@ -23,6 +23,7 @@ void get_random_vector (vector<int> &v, int n, int maxx)
         int rand_nr = (rand() * rand()) % (maxx + 1);
         v.push_back(rand_nr);
     }
+
 }
 
 //Fiind o functie recursiva, nu pot masura timpul in cadrul functiei pentru ca se va autoapela si voi avea returnati mai multi timpi
@@ -61,12 +62,13 @@ void SelectionSort (vector<int> v, int n)
             if (v[i] > v[j]) swap(v[i], v[j]);
         }
     }
+
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     if (test_sort(v, n))
-        cout<<"SelectionSort a sortat corect numerele in "<<duration.count()/10000.0000000000 <<" secunde"<< endl;
+        cout<<"SelectionSort a sortat corect numerele in "<<duration.count() <<" secunde"<< endl;
     else
-        cout<<"SelectionSort nu a sortat numerele corect";
+        cout<<"SelectionSort nu a sortat numerele corect"<<endl;
 }
 
 void CountingSort(vector<int> v, int n, int maxx)
@@ -82,18 +84,21 @@ void CountingSort(vector<int> v, int n, int maxx)
             for (int j = 1; j <= w[i]; j++) v.push_back(i);
         }
     }
+
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     if (test_sort(v, n))
-        cout<<"CountingSort a sortat corect numerele in "<<duration.count()/10000.0000000000 <<" secunde"<< endl;
+        cout<<"CountingSort a sortat corect numerele in "<<duration.count() <<" secunde"<< endl;
     else
-        cout<<"CountingSort nu a sortat numerele corect";
+        cout<<"CountingSort nu a sortat numerele corect"<<endl;
+
     w.clear();
 }
 
 //RadixSort doar in baza 10
 int RadixSort(vector<int> v, int n){
     auto start = high_resolution_clock::now();
+
     //caut maximul pentru a sti cate cifre are cel mai mare si pana la cat merg cu forul
     int max_el = v[0];
     for (auto it: v) if (it > max_el) max_el = it;
@@ -116,12 +121,13 @@ int RadixSort(vector<int> v, int n){
         }
         delete[] w;
     }
+
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     if (test_sort(v, n))
-        cout<<"RadixSort a sortat corect numerele in "<<duration.count()/10000.0000000000 <<" secunde"<< endl;
+        cout<<"RadixSort a sortat corect numerele in "<<duration.count() <<" secunde"<< endl;
     else
-        cout<<"CountingSort nu a sortat numerele corect";
+        cout<<"RadixSort nu a sortat numerele corect"<<endl;
 
 }
 
@@ -138,8 +144,9 @@ void InsersionSort (vector<int> &v, int n)
         v[j+1] = elem_curent;
     }
 }
-void ShellSort (vector<int> &v, int n)
+void ShellSort (vector<int> v, int n)
 {
+    auto start = high_resolution_clock::now();
     int gap;
     for (gap = (n - 1) / 2; gap > 1; gap /= 2 ){
         for (int i = 0; i < gap; i ++){
@@ -151,31 +158,46 @@ void ShellSort (vector<int> &v, int n)
 
     }
     if (gap == 1 and !test_sort(v, n)) InsersionSort(v, n);
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    if (test_sort(v, n))
+        cout<<"ShellSort a sortat corect numerele in "<<duration.count() <<" secunde"<< endl;
+    else
+        cout<<"ShellSort nu a sortat numerele corect"<<endl;
 }
 
 int main() {
 
-    /*citire fisier
-     * int n, maxx, numar_teste;
-     * vector <int> v;
-     * fin>>numar_teste;
-     * for (int i = 1; i <= numar_teste; i++){
-     *      fin>>n>>maxx;
-     *      get_random_vector(v, n, maxx);
-     *
-     *
-     * }
-     */
-
 
     int n, maxx, numar_teste;
     vector <int> v;
-    cin>>n;
-    for (int i = 1; i <= n; i++){
-        int x; cin>>x;
-        v.push_back(x);
+    cin>>numar_teste;
+    for (int i = 1; i <= numar_teste; i++){
+        cin>>n>>maxx;
+        get_random_vector(v, n, maxx);
+
+        cout<<n<<" "<<maxx<<":"<<endl;
+        SelectionSort(v, n);
+        RadixSort(v, n);
+        CountingSort(v, n, maxx+1);
+        ShellSort(v, n);
+
+
+        v.clear();
+
     }
-    ShellSort(v, n);
-    for (auto it: v) cout<<it<<" ";
+
+
+//    int n, maxx, numar_teste;
+//    vector <int> v;
+//    cin>>n;
+//    for (int i = 1; i <= n; i++){
+//        int x; cin>>x;
+//        v.push_back(x);
+//    }
+//    InsersionSort(v, n);
+//    for (auto it: v) cout<<it<<" ";
     return 0;
 }
