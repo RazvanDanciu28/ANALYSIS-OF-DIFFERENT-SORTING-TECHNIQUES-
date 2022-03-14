@@ -234,29 +234,28 @@ int main() {
         copie.clear();
 
         //MergeSort
-        if (n > 100000)
-            cout<<"Sunt prea multe numere pentru a fi sortate folosind MergeSort. Va dura prea mult sau se va ajunge la Stack Overflow."<<endl;
-        else{
-            for (auto it: v) copie.push_back(it);
-            auto start = high_resolution_clock::now();
-            MergeSort(copie, 0 , n-1);
-            auto stop = high_resolution_clock::now();
-            auto duration = duration_cast<microseconds>(stop - start);
-            if (test_sort(copie, n))
-                cout<<"MergeSort a sortat corect numerele in "<<duration.count()/1000000.00000000000 <<" secunde"<< endl;
-            else
-                cout<<"MergeSort nu a sortat numerele corect"<<endl;
-            copie.clear();
-        }
+        for (auto it: v) copie.push_back(it);
+        start = high_resolution_clock::now();
+        MergeSort(copie, 0 , n-1);
+        stop = high_resolution_clock::now();
+        duration = duration_cast<microseconds>(stop - start);
+        if (test_sort(copie, n))
+            cout<<"MergeSort a sortat corect numerele in "<<duration.count()/1000000.00000000000 <<" secunde"<< endl;
+        else
+            cout<<"MergeSort nu a sortat numerele corect"<<endl;
+        copie.clear();
 
+        //SelectionSort
         if (n >= 1000000)
             cout<<"Sunt prea multe numere pentru a fi sortate folosind SelectionSort. Va dura prea mult."<<endl;
         else
             SelectionSort(v, n);
 
+        //RadixSort si CountingSort
         RadixSort(v, n);
         CountingSort(v, n, maxx+1);
 
+        //ShellSort
         if (n >= 10000000)
             cout<<"Sunt prea multe numere pentru a fi sortate folosind ShellSort. Va dura prea mult."<<endl;
         else
